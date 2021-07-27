@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-# Scaffolding Example
+# AAEP Example
 
 To run this example you need to execute:
 
@@ -12,12 +12,14 @@ $ terraform apply
 Note that this example will create resources. Resources can be destroyed with `terraform destroy`.
 
 ```hcl
-module "aci_scaffolding" {
-  source = "netascode/scaffolding/aci"
+module "aci_aaep" {
+  source = "netascode/aaep/aci"
 
-  name        = "ABC"
-  alias       = "ABC-ALIAS"
-  description = "My Description"
+  name               = "AAEP1"
+  infra_vlan         = 10
+  physical_domains   = ["PD1"]
+  routed_domains     = ["RD1"]
+  vmware_vmm_domains = ["VMM1"]
 }
 
 ```
