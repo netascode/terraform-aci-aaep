@@ -7,7 +7,7 @@ content: |-
 
   # Terraform ACI AAEP Module
 
-  Description
+  Manages ACI Attachable Access Entity Profile 
 
   Location in GUI:
   `Fabric` » `Access Policies` » `Policies` » `Global` » `Attachable Access Entity Profiles`
