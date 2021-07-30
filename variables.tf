@@ -9,7 +9,7 @@ variable "name" {
 }
 
 variable "infra_vlan" {
-  description = "Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan."
+  description = "Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan, Minimum value: 0, Maximum value: 4096."
   type        = number
   default     = 0
 
