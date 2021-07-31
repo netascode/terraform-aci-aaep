@@ -14,10 +14,7 @@ variable "infra_vlan" {
   default     = 0
 
   validation {
-    condition = anytrue([
-      var.infra_vlan >= 0,
-      var.infra_vlan <= 4096
-    ])
+    condition     = var.infra_vlan >= 0 && var.infra_vlan <= 4096
     error_message = "Minimum value: 0, Maximum value: 4096."
   }
 }
