@@ -40,11 +40,11 @@ module "aci_aaep" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | AAEP name | `string` | n/a | yes |
-| <a name="input_infra_vlan"></a> [infra\_vlan](#input\_infra\_vlan) | Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan, Minimum value: 0, Maximum value: 4096. | `number` | `0` | no |
-| <a name="input_physical_domains"></a> [physical\_domains](#input\_physical\_domains) | Physical domains | `list(string)` | `[]` | no |
-| <a name="input_routed_domains"></a> [routed\_domains](#input\_routed\_domains) | Routed Ddomains | `list(string)` | `[]` | no |
-| <a name="input_vmware_vmm_domains"></a> [vmware\_vmm\_domains](#input\_vmware\_vmm\_domains) | VMware VMM domains | `list(string)` | `[]` | no |
+| <a name="input_name"></a> [name](#input\_name) | Attachable access entity profile name. | `string` | n/a | yes |
+| <a name="input_infra_vlan"></a> [infra\_vlan](#input\_infra\_vlan) | Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan. Minimum value: 0. Maximum value: 4096. | `number` | `0` | no |
+| <a name="input_physical_domains"></a> [physical\_domains](#input\_physical\_domains) | Physical domains. | `list(string)` | `[]` | no |
+| <a name="input_routed_domains"></a> [routed\_domains](#input\_routed\_domains) | Routed domains. | `list(string)` | `[]` | no |
+| <a name="input_vmware_vmm_domains"></a> [vmware\_vmm\_domains](#input\_vmware\_vmm\_domains) | VMware VMM domains. | `list(string)` | `[]` | no |
 
 ## Outputs
 

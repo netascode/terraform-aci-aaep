@@ -1,5 +1,5 @@
 variable "name" {
-  description = "AAEP name"
+  description = "Attachable access entity profile name."
   type        = string
 
   validation {
@@ -9,18 +9,18 @@ variable "name" {
 }
 
 variable "infra_vlan" {
-  description = "Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan, Minimum value: 0, Maximum value: 4096."
+  description = "Infrastructure vlan ID. A vlan ID of `0` disables the infrastructure vlan. Minimum value: 0. Maximum value: 4096."
   type        = number
   default     = 0
 
   validation {
     condition     = var.infra_vlan >= 0 && var.infra_vlan <= 4096
-    error_message = "Minimum value: 0, Maximum value: 4096."
+    error_message = "Minimum value: 0. Maximum value: 4096."
   }
 }
 
 variable "physical_domains" {
-  description = "Physical domains"
+  description = "Physical domains."
   type        = list(string)
   default     = []
 
@@ -33,7 +33,7 @@ variable "physical_domains" {
 }
 
 variable "routed_domains" {
-  description = "Routed Ddomains"
+  description = "Routed domains."
   type        = list(string)
   default     = []
 
@@ -46,7 +46,7 @@ variable "routed_domains" {
 }
 
 variable "vmware_vmm_domains" {
-  description = "VMware VMM domains"
+  description = "VMware VMM domains."
   type        = list(string)
   default     = []
 
