@@ -50,8 +50,8 @@ module "aci_aaep" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraAttEntityP` object |
-| <a name="output_name"></a> [name](#output\_name) | AAEP name |
+| <a name="output_dn"></a> [dn](#output\_dn) | Distinguished name of `infraAttEntityP` object. |
+| <a name="output_name"></a> [name](#output\_name) | AAEP name. |
 
 ## Resources
 
