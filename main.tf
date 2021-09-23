@@ -53,3 +53,23 @@ resource "aci_rest" "dhcpInfraProvP" {
   }
 }
 
+resource "aci_rest" "infraGeneric" {
+  count      = length(var.endpoint_groups) != 0 ? 1 : 0
+  dn         = "${aci_rest.infraAttEntityP.id}/gen-default"
+  class_name = "infraGeneric"
+  content = {
+    name = "default"
+  }
+}
+
+resource "aci_rest" "infraGeneric-infraRsFuncToEpg" {
+  for_each   = { for epg in var.endpoint_groups : "uni/tn-${epg.tenant}/ap-${epg.application_profile}/epg-${epg.endpoint_group}" => epg }
+  dn         = "${aci_rest.infraGeneric[0].id}/rsfuncToEpg-[${each.key}]"
+  class_name = "infraRsFuncToEpg"
+  content = {
+    tDn          = each.key
+    encap        = "vlan-${each.value.vlan}"
+    primaryEncap = each.value.primary_vlan != null ? "vlan-${each.value.primary_vlan}" : "unknown"
+    mode         = each.value.mode != null ? each.value.mode : "regular"
+  }
+}

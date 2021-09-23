@@ -12,13 +12,24 @@ Location in GUI:
 
 ```hcl
 module "aci_aaep" {
-  source = "netascode/aaep/aci"
+  source  = "netascode/aaep/aci"
+  version = ">= 0.0.1"
 
   name               = "AAEP1"
   infra_vlan         = 10
   physical_domains   = ["PD1"]
   routed_domains     = ["RD1"]
   vmware_vmm_domains = ["VMM1"]
+  endpoint_groups = [
+    {
+      tenant              = "TF"
+      application_profile = "AP1"
+      endpoint_group      = "EPG1"
+      vlan                = "10"
+      primary_vlan        = "10"
+      mode                = "untagged"
+    }
+  ]
 }
 
 ```
@@ -45,6 +56,7 @@ module "aci_aaep" {
 | <a name="input_physical_domains"></a> [physical\_domains](#input\_physical\_domains) | Physical domains. | `list(string)` | `[]` | no |
 | <a name="input_routed_domains"></a> [routed\_domains](#input\_routed\_domains) | Routed domains. | `list(string)` | `[]` | no |
 | <a name="input_vmware_vmm_domains"></a> [vmware\_vmm\_domains](#input\_vmware\_vmm\_domains) | VMware VMM domains. | `list(string)` | `[]` | no |
+| <a name="input_endpoint_groups"></a> [endpoint\_groups](#input\_endpoint\_groups) | List of application endpoint groups. Allowed values `vlan`: `1` - `4096`. Allowed values `primary_vlan`: `1` - `4096`. Default value `primary_vlan`: `. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular | <pre>list(object({<br>    tenant              = string<br>    application_profile = string<br>    endpoint_group      = string<br>    vlan                = number<br>    primary_vlan        = optional(number)<br>    mode                = optional(string)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 
@@ -59,6 +71,8 @@ module "aci_aaep" {
 |------|------|
 | [aci_rest.dhcpInfraProvP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 | [aci_rest.infraAttEntityP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.infraGeneric](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest.infraGeneric-infraRsFuncToEpg](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 | [aci_rest.infraProvAcc](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 | [aci_rest.infraRsDomP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
 | [aci_rest.infraRsFuncToEpg](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
