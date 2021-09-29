@@ -59,15 +59,16 @@ variable "vmware_vmm_domains" {
 }
 
 variable "endpoint_groups" {
-  description = "List of application endpoint groups. Allowed values `vlan`, `primary_vlan`, `secondary_vlan`: `1` - `4096`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`."
+  description = "List of application endpoint groups. Allowed values `vlan`, `primary_vlan`, `secondary_vlan`: `1` - `4096`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`. Choices `deployment_immediacy`: `immediate`, `lazy`. Default value `deployment_immediacy`: `lazy`."
   type = list(object({
-    tenant              = string
-    application_profile = string
-    endpoint_group      = string
-    vlan                = optional(number)
-    primary_vlan        = optional(number)
-    secondary_vlan      = optional(number)
-    mode                = optional(string)
+    tenant               = string
+    application_profile  = string
+    endpoint_group       = string
+    vlan                 = optional(number)
+    primary_vlan         = optional(number)
+    secondary_vlan       = optional(number)
+    mode                 = optional(string)
+    deployment_immediacy = optional(string)
   }))
   default = []
 
@@ -118,5 +119,12 @@ variable "endpoint_groups" {
       for epg in var.endpoint_groups : epg.mode == null || try(contains(["regular", "native", "untagged"], epg.mode), false)
     ])
     error_message = "`mode`: Allowed values are `regular`, `native` or `untagged`."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : epg.deployment_immediacy == null || try(contains(["immediate", "lazy"], epg.deployment_immediacy), false)
+    ])
+    error_message = "`deployment_immediacy`: Allowed values are `immediate` or `lazy`."
   }
 }

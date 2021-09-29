@@ -21,12 +21,13 @@ module "main" {
   vmware_vmm_domains = ["VMM1"]
   endpoint_groups = [
     {
-      tenant              = "TF"
-      application_profile = "AP1"
-      endpoint_group      = "EPG1"
-      primary_vlan        = 10
-      secondary_vlan      = 20
-      mode                = "untagged"
+      tenant               = "TF"
+      application_profile  = "AP1"
+      endpoint_group       = "EPG1"
+      primary_vlan         = 10
+      secondary_vlan       = 20
+      mode                 = "untagged"
+      deployment_immediacy = "immediate"
     }
   ]
 }
@@ -188,5 +189,11 @@ resource "test_assertions" "infraGeneric-infraRsFuncToEpg" {
     description = "mode"
     got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.mode
     want        = "untagged"
+  }
+
+  equal "instrImedcy" {
+    description = "instrImedcy"
+    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.instrImedcy
+    want        = "immediate"
   }
 }

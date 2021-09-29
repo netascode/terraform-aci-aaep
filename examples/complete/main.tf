@@ -8,11 +8,12 @@ module "aci_aaep" {
   routed_domains     = ["RD1"]
   vmware_vmm_domains = ["VMM1"]
   endpoint_groups = [{
-    tenant              = "TF"
-    application_profile = "AP1"
-    endpoint_group      = "EPG1"
-    primary_vlan        = 10
-    secondary_vlan      = 20
-    mode                = "untagged"
+    tenant               = "TF"
+    application_profile  = "AP1"
+    endpoint_group       = "EPG1"
+    primary_vlan         = 10
+    secondary_vlan       = 20
+    mode                 = "untagged"
+    deployment_immediacy = "immediate"
   }]
 }
