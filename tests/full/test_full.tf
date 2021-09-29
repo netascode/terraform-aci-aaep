@@ -19,6 +19,16 @@ module "main" {
   physical_domains   = ["PD1"]
   routed_domains     = ["RD1"]
   vmware_vmm_domains = ["VMM1"]
+  endpoint_groups = [
+    {
+      tenant              = "TF"
+      application_profile = "AP1"
+      endpoint_group      = "EPG1"
+      vlan                = "10"
+      primary_vlan        = "10"
+      mode                = "untagged"
+    }
+  ]
 }
 
 locals {
@@ -128,5 +138,55 @@ resource "test_assertions" "dhcpInfraProvP" {
     description = "mode"
     got         = data.aci_rest.dhcpInfraProvP.content.mode
     want        = "controller"
+  }
+}
+
+data "aci_rest" "infraGeneric" {
+  dn = "${data.aci_rest.infraAttEntityP.id}/gen-default"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "infraGeneric" {
+  component = "infraGeneric"
+
+  equal "name" {
+    description = "name"
+    got         = data.aci_rest.infraGeneric.content.name
+    want        = "default"
+  }
+}
+
+data "aci_rest" "infraGeneric-infraRsFuncToEpg" {
+  dn = "${data.aci_rest.infraGeneric.id}/rsfuncToEpg-[uni/tn-TF/ap-AP1/epg-EPG1]"
+
+  depends_on = [module.main]
+}
+
+resource "test_assertions" "infraGeneric-infraRsFuncToEpg" {
+  component = "infraGeneric-infraRsFuncToEpg"
+
+  equal "tDn" {
+    description = "tDn"
+    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.tDn
+    want        = "uni/tn-TF/ap-AP1/epg-EPG1"
+  }
+
+  equal "encap" {
+    description = "encap"
+    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.encap
+    want        = "vlan-10"
+  }
+
+  equal "primaryEncap" {
+    description = "primaryEncap"
+    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.primaryEncap
+    want        = "vlan-10"
+  }
+
+  equal "mode" {
+    description = "mode"
+    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.mode
+    want        = "untagged"
   }
 }

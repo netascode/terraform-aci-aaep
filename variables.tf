@@ -57,3 +57,58 @@ variable "vmware_vmm_domains" {
     error_message = "Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
   }
 }
+
+variable "endpoint_groups" {
+  description = "List of application endpoint groups. Allowed values `vlan`: `1` - `4096`. Allowed values `primary_vlan`: `1` - `4096`. Default value `primary_vlan`: ``. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`"
+  type = list(object({
+    tenant              = string
+    application_profile = string
+    endpoint_group      = string
+    vlan                = number
+    primary_vlan        = optional(number)
+    mode                = optional(string)
+  }))
+  default = []
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.tenant))
+    ])
+    error_message = "`tenant`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.application_profile))
+    ])
+    error_message = "`application_profile`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : can(regex("^[a-zA-Z0-9_.-]{0,64}$", epg.endpoint_group))
+    ])
+    error_message = "`endpoint_group`: Allowed characters: `a`-`z`, `A`-`Z`, `0`-`9`, `_`, `.`, `-`. Maximum characters: 64."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : epg.vlan == null || try(epg.vlan >= 1 && epg.vlan <= 4096, false)
+    ])
+    error_message = "`vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : epg.primary_vlan == null || try(epg.primary_vlan >= 1 && epg.primary_vlan <= 4096, false)
+    ])
+    error_message = "`primary_vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : epg.mode == null || try(contains(["regular", "native", "untagged"], epg.mode), false)
+    ])
+    error_message = "`mode`: Allowed values are `regular`, `native` or `untagged`."
+  }
+}
