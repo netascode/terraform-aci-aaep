@@ -11,8 +11,8 @@ module "aci_aaep" {
     tenant              = "TF"
     application_profile = "AP1"
     endpoint_group      = "EPG1"
-    vlan                = "10"
-    primary_vlan        = "10"
+    primary_vlan        = 10
+    secondary_vlan      = 20
     mode                = "untagged"
   }]
 }

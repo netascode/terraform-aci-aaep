@@ -59,13 +59,14 @@ variable "vmware_vmm_domains" {
 }
 
 variable "endpoint_groups" {
-  description = "List of application endpoint groups. Allowed values `vlan`: `1` - `4096`. Allowed values `primary_vlan`: `1` - `4096`. Default value `primary_vlan`: ``. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`"
+  description = "List of application endpoint groups. Allowed values `vlan`, `primary_vlan`, `secondary_vlan`: `1` - `4096`. Choices `mode`: `regular`, `native`, `untagged`. Default value `mode`: `regular`."
   type = list(object({
     tenant              = string
     application_profile = string
     endpoint_group      = string
-    vlan                = number
+    vlan                = optional(number)
     primary_vlan        = optional(number)
+    secondary_vlan      = optional(number)
     mode                = optional(string)
   }))
   default = []
@@ -103,6 +104,13 @@ variable "endpoint_groups" {
       for epg in var.endpoint_groups : epg.primary_vlan == null || try(epg.primary_vlan >= 1 && epg.primary_vlan <= 4096, false)
     ])
     error_message = "`primary_vlan`: Minimum value: `1`. Maximum value: `4096`."
+  }
+
+  validation {
+    condition = alltrue([
+      for epg in var.endpoint_groups : epg.secondary_vlan == null || try(epg.secondary_vlan >= 1 && epg.secondary_vlan <= 4096, false)
+    ])
+    error_message = "`secondary_vlan`: Minimum value: `1`. Maximum value: `4096`."
   }
 
   validation {

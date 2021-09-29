@@ -24,8 +24,8 @@ module "main" {
       tenant              = "TF"
       application_profile = "AP1"
       endpoint_group      = "EPG1"
-      vlan                = "10"
-      primary_vlan        = "10"
+      primary_vlan        = 10
+      secondary_vlan      = 20
       mode                = "untagged"
     }
   ]
@@ -175,7 +175,7 @@ resource "test_assertions" "infraGeneric-infraRsFuncToEpg" {
   equal "encap" {
     description = "encap"
     got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.encap
-    want        = "vlan-10"
+    want        = "vlan-20"
   }
 
   equal "primaryEncap" {

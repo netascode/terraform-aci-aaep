@@ -68,7 +68,7 @@ resource "aci_rest" "infraGeneric-infraRsFuncToEpg" {
   class_name = "infraRsFuncToEpg"
   content = {
     tDn          = each.key
-    encap        = "vlan-${each.value.vlan}"
+    encap        = each.value.primary_vlan != null ? (each.value.secondary_vlan != null ? "vlan-${each.value.secondary_vlan}" : "unknown") : (each.value.vlan != null ? "vlan-${each.value.vlan}" : "unknown")
     primaryEncap = each.value.primary_vlan != null ? "vlan-${each.value.primary_vlan}" : "unknown"
     mode         = each.value.mode != null ? each.value.mode : "regular"
   }
