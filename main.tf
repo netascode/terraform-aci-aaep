@@ -15,7 +15,7 @@ resource "aci_rest" "infraAttEntityP" {
 
 resource "aci_rest" "infraRsDomP" {
   for_each   = toset(local.domains)
-  dn         = "${aci_rest.infraAttEntityP.id}/rsdomP-[${each.value}]"
+  dn         = "${aci_rest.infraAttEntityP.dn}/rsdomP-[${each.value}]"
   class_name = "infraRsDomP"
   content = {
     tDn = each.value
@@ -24,7 +24,7 @@ resource "aci_rest" "infraRsDomP" {
 
 resource "aci_rest" "infraProvAcc" {
   count      = var.infra_vlan != 0 ? 1 : 0
-  dn         = "${aci_rest.infraAttEntityP.id}/provacc"
+  dn         = "${aci_rest.infraAttEntityP.dn}/provacc"
   class_name = "infraProvAcc"
   content = {
     name = "provacc"
@@ -33,7 +33,7 @@ resource "aci_rest" "infraProvAcc" {
 
 resource "aci_rest" "infraRsFuncToEpg" {
   count      = var.infra_vlan != 0 ? 1 : 0
-  dn         = "${aci_rest.infraProvAcc[0].id}/rsfuncToEpg-[uni/tn-infra/ap-access/epg-default]"
+  dn         = "${aci_rest.infraProvAcc[0].dn}/rsfuncToEpg-[uni/tn-infra/ap-access/epg-default]"
   class_name = "infraRsFuncToEpg"
   content = {
     encap        = "vlan-${var.infra_vlan}"
@@ -46,7 +46,7 @@ resource "aci_rest" "infraRsFuncToEpg" {
 
 resource "aci_rest" "dhcpInfraProvP" {
   count      = var.infra_vlan != 0 ? 1 : 0
-  dn         = "${aci_rest.infraProvAcc[0].id}/infraprovp"
+  dn         = "${aci_rest.infraProvAcc[0].dn}/infraprovp"
   class_name = "dhcpInfraProvP"
   content = {
     mode = "controller"
@@ -55,7 +55,7 @@ resource "aci_rest" "dhcpInfraProvP" {
 
 resource "aci_rest" "infraGeneric" {
   count      = length(var.endpoint_groups) != 0 ? 1 : 0
-  dn         = "${aci_rest.infraAttEntityP.id}/gen-default"
+  dn         = "${aci_rest.infraAttEntityP.dn}/gen-default"
   class_name = "infraGeneric"
   content = {
     name = "default"
@@ -64,7 +64,7 @@ resource "aci_rest" "infraGeneric" {
 
 resource "aci_rest" "infraGeneric-infraRsFuncToEpg" {
   for_each   = { for epg in var.endpoint_groups : "uni/tn-${epg.tenant}/ap-${epg.application_profile}/epg-${epg.endpoint_group}" => epg }
-  dn         = "${aci_rest.infraGeneric[0].id}/rsfuncToEpg-[${each.key}]"
+  dn         = "${aci_rest.infraGeneric[0].dn}/rsfuncToEpg-[${each.key}]"
   class_name = "infraRsFuncToEpg"
   content = {
     tDn          = each.key
