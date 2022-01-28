@@ -14,7 +14,7 @@ Note that this example will create resources. Resources can be destroyed with `t
 ```hcl
 module "aci_aaep" {
   source  = "netascode/aaep/aci"
-  version = ">= 0.0.2"
+  version = ">= 0.1.0"
 
   name               = "AAEP1"
   infra_vlan         = 10
@@ -31,6 +31,5 @@ module "aci_aaep" {
     deployment_immediacy = "immediate"
   }]
 }
-
 ```
 <!-- END_TF_DOCS -->

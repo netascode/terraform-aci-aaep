@@ -3,7 +3,7 @@
 
 # Terraform ACI AAEP Module
 
-Manages ACI Attachable Access Entity Profile 
+Manages ACI Attachable Access Entity Profile
 
 Location in GUI:
 `Fabric` » `Access Policies` » `Policies` » `Global` » `Attachable Access Entity Profiles`
@@ -13,7 +13,7 @@ Location in GUI:
 ```hcl
 module "aci_aaep" {
   source  = "netascode/aaep/aci"
-  version = ">= 0.0.2"
+  version = ">= 0.1.0"
 
   name               = "AAEP1"
   infra_vlan         = 10
@@ -30,7 +30,6 @@ module "aci_aaep" {
     deployment_immediacy = "immediate"
   }]
 }
-
 ```
 
 ## Requirements
@@ -38,13 +37,13 @@ module "aci_aaep" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 0.2.0 |
+| <a name="requirement_aci"></a> [aci](#requirement\_aci) | >= 2.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 0.2.0 |
+| <a name="provider_aci"></a> [aci](#provider\_aci) | >= 2.0.0 |
 
 ## Inputs
 
@@ -68,11 +67,11 @@ module "aci_aaep" {
 
 | Name | Type |
 |------|------|
-| [aci_rest.dhcpInfraProvP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraAttEntityP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraGeneric](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraGeneric-infraRsFuncToEpg](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraProvAcc](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraRsDomP](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
-| [aci_rest.infraRsFuncToEpg](https://registry.terraform.io/providers/netascode/aci/latest/docs/resources/rest) | resource |
+| [aci_rest_managed.dhcpInfraProvP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraAttEntityP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraGeneric](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraGeneric-infraRsFuncToEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraProvAcc](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsDomP](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
+| [aci_rest_managed.infraRsFuncToEpg](https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs/resources/rest_managed) | resource |
 <!-- END_TF_DOCS -->

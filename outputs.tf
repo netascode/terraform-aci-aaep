@@ -1,9 +1,9 @@
 output "dn" {
-  value       = aci_rest.infraAttEntityP.id
+  value       = aci_rest_managed.infraAttEntityP.id
   description = "Distinguished name of `infraAttEntityP` object."
 }
 
 output "name" {
-  value       = aci_rest.infraAttEntityP.content.name
+  value       = aci_rest_managed.infraAttEntityP.content.name
   description = "AAEP name."
 }

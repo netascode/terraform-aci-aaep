@@ -5,8 +5,8 @@ terraform {
     }
 
     aci = {
-      source  = "netascode/aci"
-      version = ">=0.2.0"
+      source  = "CiscoDevNet/aci"
+      version = ">=2.0.0"
     }
   }
 }
@@ -36,7 +36,7 @@ locals {
   domains = ["uni/phys-PD1", "uni/l3dom-RD1", "uni/vmmp-VMware/dom-VMM1"]
 }
 
-data "aci_rest" "infraAttEntityP" {
+data "aci_rest_managed" "infraAttEntityP" {
   dn = "uni/infra/attentp-${module.main.name}"
 
   depends_on = [module.main]
@@ -47,14 +47,14 @@ resource "test_assertions" "infraAttEntityP" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.infraAttEntityP.content.name
+    got         = data.aci_rest_managed.infraAttEntityP.content.name
     want        = module.main.name
   }
 }
 
-data "aci_rest" "infraRsDomP" {
+data "aci_rest_managed" "infraRsDomP" {
   for_each = toset(local.domains)
-  dn       = "${data.aci_rest.infraAttEntityP.id}/rsdomP-[${each.value}]"
+  dn       = "${data.aci_rest_managed.infraAttEntityP.id}/rsdomP-[${each.value}]"
 
   depends_on = [module.main]
 }
@@ -65,13 +65,13 @@ resource "test_assertions" "infraRsDomP" {
 
   equal "tDn" {
     description = "tDn"
-    got         = data.aci_rest.infraRsDomP[each.value].content.tDn
+    got         = data.aci_rest_managed.infraRsDomP[each.value].content.tDn
     want        = each.value
   }
 }
 
-data "aci_rest" "infraProvAcc" {
-  dn = "${data.aci_rest.infraAttEntityP.id}/provacc"
+data "aci_rest_managed" "infraProvAcc" {
+  dn = "${data.aci_rest_managed.infraAttEntityP.id}/provacc"
 
   depends_on = [module.main]
 }
@@ -81,13 +81,13 @@ resource "test_assertions" "infraProvAcc" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.infraProvAcc.content.name
+    got         = data.aci_rest_managed.infraProvAcc.content.name
     want        = "provacc"
   }
 }
 
-data "aci_rest" "infraRsFuncToEpg" {
-  dn = "${data.aci_rest.infraProvAcc.id}/rsfuncToEpg-[uni/tn-infra/ap-access/epg-default]"
+data "aci_rest_managed" "infraRsFuncToEpg" {
+  dn = "${data.aci_rest_managed.infraProvAcc.id}/rsfuncToEpg-[uni/tn-infra/ap-access/epg-default]"
 
   depends_on = [module.main]
 }
@@ -97,37 +97,37 @@ resource "test_assertions" "infraRsFuncToEpg" {
 
   equal "encap" {
     description = "encap"
-    got         = data.aci_rest.infraRsFuncToEpg.content.encap
+    got         = data.aci_rest_managed.infraRsFuncToEpg.content.encap
     want        = "vlan-4"
   }
 
   equal "instrImedcy" {
     description = "instrImedcy"
-    got         = data.aci_rest.infraRsFuncToEpg.content.instrImedcy
+    got         = data.aci_rest_managed.infraRsFuncToEpg.content.instrImedcy
     want        = "lazy"
   }
 
   equal "mode" {
     description = "mode"
-    got         = data.aci_rest.infraRsFuncToEpg.content.mode
+    got         = data.aci_rest_managed.infraRsFuncToEpg.content.mode
     want        = "regular"
   }
 
   equal "primaryEncap" {
     description = "primaryEncap"
-    got         = data.aci_rest.infraRsFuncToEpg.content.primaryEncap
+    got         = data.aci_rest_managed.infraRsFuncToEpg.content.primaryEncap
     want        = "unknown"
   }
 
   equal "tDn" {
     description = "tDn"
-    got         = data.aci_rest.infraRsFuncToEpg.content.tDn
+    got         = data.aci_rest_managed.infraRsFuncToEpg.content.tDn
     want        = "uni/tn-infra/ap-access/epg-default"
   }
 }
 
-data "aci_rest" "dhcpInfraProvP" {
-  dn = "${data.aci_rest.infraProvAcc.id}/infraprovp"
+data "aci_rest_managed" "dhcpInfraProvP" {
+  dn = "${data.aci_rest_managed.infraProvAcc.id}/infraprovp"
 
   depends_on = [module.main]
 }
@@ -137,13 +137,13 @@ resource "test_assertions" "dhcpInfraProvP" {
 
   equal "mode" {
     description = "mode"
-    got         = data.aci_rest.dhcpInfraProvP.content.mode
+    got         = data.aci_rest_managed.dhcpInfraProvP.content.mode
     want        = "controller"
   }
 }
 
-data "aci_rest" "infraGeneric" {
-  dn = "${data.aci_rest.infraAttEntityP.id}/gen-default"
+data "aci_rest_managed" "infraGeneric" {
+  dn = "${data.aci_rest_managed.infraAttEntityP.id}/gen-default"
 
   depends_on = [module.main]
 }
@@ -153,13 +153,13 @@ resource "test_assertions" "infraGeneric" {
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest.infraGeneric.content.name
+    got         = data.aci_rest_managed.infraGeneric.content.name
     want        = "default"
   }
 }
 
-data "aci_rest" "infraGeneric-infraRsFuncToEpg" {
-  dn = "${data.aci_rest.infraGeneric.id}/rsfuncToEpg-[uni/tn-TF/ap-AP1/epg-EPG1]"
+data "aci_rest_managed" "infraGeneric-infraRsFuncToEpg" {
+  dn = "${data.aci_rest_managed.infraGeneric.id}/rsfuncToEpg-[uni/tn-TF/ap-AP1/epg-EPG1]"
 
   depends_on = [module.main]
 }
@@ -169,31 +169,31 @@ resource "test_assertions" "infraGeneric-infraRsFuncToEpg" {
 
   equal "tDn" {
     description = "tDn"
-    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.tDn
+    got         = data.aci_rest_managed.infraGeneric-infraRsFuncToEpg.content.tDn
     want        = "uni/tn-TF/ap-AP1/epg-EPG1"
   }
 
   equal "encap" {
     description = "encap"
-    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.encap
+    got         = data.aci_rest_managed.infraGeneric-infraRsFuncToEpg.content.encap
     want        = "vlan-20"
   }
 
   equal "primaryEncap" {
     description = "primaryEncap"
-    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.primaryEncap
+    got         = data.aci_rest_managed.infraGeneric-infraRsFuncToEpg.content.primaryEncap
     want        = "vlan-10"
   }
 
   equal "mode" {
     description = "mode"
-    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.mode
+    got         = data.aci_rest_managed.infraGeneric-infraRsFuncToEpg.content.mode
     want        = "untagged"
   }
 
   equal "instrImedcy" {
     description = "instrImedcy"
-    got         = data.aci_rest.infraGeneric-infraRsFuncToEpg.content.instrImedcy
+    got         = data.aci_rest_managed.infraGeneric-infraRsFuncToEpg.content.instrImedcy
     want        = "immediate"
   }
 }
