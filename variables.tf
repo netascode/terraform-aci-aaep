@@ -67,8 +67,8 @@ variable "endpoint_groups" {
     vlan                 = optional(number)
     primary_vlan         = optional(number)
     secondary_vlan       = optional(number)
-    mode                 = optional(string)
-    deployment_immediacy = optional(string)
+    mode                 = optional(string, "regular")
+    deployment_immediacy = optional(string, "lazy")
   }))
   default = []
 
